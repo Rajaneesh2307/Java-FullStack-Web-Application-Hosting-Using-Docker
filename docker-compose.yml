@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  devopsdb:
+    image: yembulururajaneesh/java-fullstack-web-application:db
+    ports:
+      - "3306:3306"
+    deploy:
+      replicas: 1
+    volumes:
+      - db-volume:/var/lib/mysql
+    networks:
+      - mynetwork
+
+  application:
+    image: yembulururajaneesh/java-fullstack-web-application:app
+    ports:
+      - "8082:8080"
+    deploy:
+      replicas: 3
+    depends_on:
+      - devopsdb
+    networks:
+      - mynetwork
+
+volumes:
+  db-volume:
+
+networks:
+  mynetwork:
+    driver: overlay
